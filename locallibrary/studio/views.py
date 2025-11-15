@@ -48,7 +48,7 @@ def create_application(request):
         form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
             app = form.save(commit=False)
-            app.user = request.user
+            app.user = request.user  # связываем заявку с пользователем
             app.save()
             messages.success(request, 'Заявка создана.')
             return redirect('studio:dashboard')
@@ -64,3 +64,21 @@ def delete_application(request, pk):
         messages.success(request, 'Заявка удалена.')
         return redirect('studio:dashboard')
     return render(request, 'studio/application_confirm_delete.html', {'application': app})
+
+@login_required
+def application_detail(request, pk):
+    app = get_object_or_404(Application, pk=pk, user=request.user)
+    return render(request, 'studio/application_detail.html', {'application': app})
+
+@login_required
+def edit_application(request, pk):
+    app = get_object_or_404(Application, pk=pk, user=request.user)
+    if request.method == 'POST':
+        form = ApplicationForm(request.POST, request.FILES, instance=app)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Заявка обновлена.')
+            return redirect('studio:application_detail', pk=app.pk)
+    else:
+        form = ApplicationForm(instance=app)
+    return render(request, 'studio/application_form.html', {'form': form, 'edit': True})

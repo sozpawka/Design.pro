@@ -1,0 +1,12 @@
+{% extends 'studio/base.html' %}
+{% block content %}
+<h2>{{ application.title }}</h2>
+<p>Статус: {{ application.get_status_display }}</p>
+<p>Категория: {{ application.get_category_display }}</p>
+<p>Описание: {{ application.description }}</p>
+{% if application.image %}
+    <img src="{{ application.image.url }}" alt="{{ application.title }}" width="300">
+{% endif %}
+<p><a href="{% url 'studio:edit_application' application.pk %}">Редактировать</a></p>
+<p><a href="{% url 'studio:dashboard' %}">Назад к списку заявок</a></p>
+{% endblock %}
