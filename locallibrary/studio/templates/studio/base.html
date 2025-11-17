@@ -10,8 +10,6 @@
 
     <nav>
         {% if request.user.is_authenticated %}
-            Привет, {{ request.user.username }} |
-
             <a href="{% url 'studio:dashboard' %}">Профиль</a> |
 
             {% if request.user.is_staff %}

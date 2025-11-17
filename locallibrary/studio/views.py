@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from django.urls import reverse
 from django.http import HttpResponseForbidden, HttpResponse
+from django.utils.timezone import make_aware
+from datetime import datetime, timedelta
 from django.db.models import Count
 import csv
+
 
 from .forms import (
     RegistrationForm,
@@ -274,23 +276,38 @@ def change_status_done(request, pk):
 # Отчёт по заявкам с экспортом в CSV
 @user_passes_test(is_admin)
 def report(request):
-    qs = Application.objects.all().select_related('category', 'user')
+    qs = Application.objects.all().select_related('category', 'user').order_by('-created')
 
+    # Фильтр по статусу
     status = request.GET.get('status')
-    category = request.GET.get('category')
-
     if status:
         qs = qs.filter(status=status)
+
+    # Фильтр по категории
+    category = request.GET.get('category')
     if category:
         qs = qs.filter(category__id=category)
 
+    # ---- Фильтр по датам ----
+    start = request.GET.get('start')
+    end = request.GET.get('end')
+
+    if start:
+        start_dt = make_aware(datetime.strptime(start, "%Y-%m-%d"))
+        qs = qs.filter(created__gte=start_dt)
+
+    if end:
+        end_dt = make_aware(datetime.strptime(end, "%Y-%m-%d")) + timedelta(days=1)
+        qs = qs.filter(created__lt=end_dt)
+
+    # достаем табличку из данных
     if request.GET.get('export') == 'csv':
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="applications_report.csv"'
         writer = csv.writer(response)
         writer.writerow(['id', 'created', 'user', 'title', 'category', 'status', 'admin_comment'])
 
-        for a in qs.order_by('-created'):
+        for a in qs:
             writer.writerow([
                 a.id,
                 a.created.isoformat(),
@@ -306,8 +323,10 @@ def report(request):
     categories = Category.objects.all()
 
     return render(request, 'studio/report.html', {
-        'applications': qs.order_by('-created')[:200],
-        'categories': categories
+        'apps': qs,           # ← теперь соответствует шаблону!
+        'categories': categories,
+        'start': start,
+        'end': end
     })
 
 
