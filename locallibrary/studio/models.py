@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 
@@ -16,12 +15,12 @@ def upload_to_design(instance, filename):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=120, unique=True, verbose_name=_("Категория"))
-    slug = models.SlugField(max_length=140, unique=True, verbose_name=_("URL"))
+    name = models.CharField(max_length=120, unique=True, verbose_name="Категория")
+    slug = models.SlugField(max_length=140, unique=True, verbose_name="URL")
 
     class Meta:
-        verbose_name = _("Категория")
-        verbose_name_plural = _("Категории")
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
         ordering = ["name"]
 
     def __str__(self):
@@ -43,51 +42,51 @@ class Application(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name="applications",
-        verbose_name=_("Пользователь"),
+        verbose_name="Пользователь",
     )
 
-    title = models.CharField(max_length=200, verbose_name=_("Название"))
+    title = models.CharField(max_length=200, verbose_name="Название")
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
         related_name="applications",
-        verbose_name=_("Категория"),
+        verbose_name="Категория",
     )
 
     image = models.ImageField(
         upload_to=upload_to_app,
         blank=True,
         null=True,
-        verbose_name=_("Фото/план помещения"),
+        verbose_name="Фото/план помещения",
     )
 
-    description = models.TextField(blank=True, verbose_name=_("Описание"))
+    description = models.TextField(blank=True, verbose_name="Описание")
     status = models.CharField(
         max_length=50,
         choices=STATUS_CHOICES,
         default=STATUS_NEW,
-        verbose_name=_("Статус"),
+        verbose_name="Статус",
     )
 
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_("Дата создания"))
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
 
     admin_comment = models.TextField(
         blank=True,
         null=True,
-        verbose_name=_("Комментарий администратора"),
+        verbose_name="Комментарий администратора",
     )
 
     design_image = models.ImageField(
         upload_to=upload_to_design,
         blank=True,
         null=True,
-        verbose_name=_("Изображение выполненного дизайна"),
+        verbose_name="Изображение выполненного дизайна",
     )
 
     class Meta:
         ordering = ["-created"]
-        verbose_name = _("Заявка")
-        verbose_name_plural = _("Заявки")
+        verbose_name = "Заявка"
+        verbose_name_plural = "Заявки"
 
     def __str__(self):
         return f"{self.title} ({self.user})"
