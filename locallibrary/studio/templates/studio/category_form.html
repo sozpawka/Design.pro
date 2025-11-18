@@ -1,24 +1,25 @@
 {% extends "studio/base.html" %}
 {% block content %}
-<h1>{% if category %}Редактировать категорию{% else %}Добавить категорию{% endif %}</h1>
+<div class="container" style="max-width: 500px; margin-top: 2rem;">
+  <h1>{% if category %}Редактировать категорию{% else %}Добавить категорию{% endif %}</h1>
 
-<form method="post">
+  <form method="post" class="border rounded p-4 shadow-sm bg-light">
     {% csrf_token %}
 
-    <p>
-        <label>Название категории:</label><br>
-        <input type="text" name="name" value="{{ category.name|default:'' }}">
-    </p>
+    <div class="mb-3">
+      <label for="id_name" class="form-label">Название категории:</label>
+      <input type="text" id="id_name" name="name" value="{{ category.name|default:'' }}" class="form-control" required>
+    </div>
 
-    <p>
-        <label>Slug:</label><br>
-        <input type="text" name="slug" value="{{ category.slug|default:'' }}">
-    </p>
+    <div class="mb-3">
+      <label for="id_slug" class="form-label">Slug:</label>
+      <input type="text" id="id_slug" name="slug" value="{{ category.slug|default:'' }}" class="form-control" required>
+    </div>
 
-    <button type="submit">
-        {% if category %}Сохранить{% else %}Создать категорию{% endif %}
+    <button type="submit" class="btn btn-primary">
+      {% if category %}Сохранить{% else %}Создать категорию{% endif %}
     </button>
-
-    <a href="{% url 'studio:category_list' %}">Отмена</a>
-</form>
+    <a href="{% url 'studio:category_list' %}" class="btn btn-outline-secondary ms-2">Отмена</a>
+  </form>
+</div>
 {% endblock %}

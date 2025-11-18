@@ -1,8 +1,11 @@
 {% extends 'studio/base.html' %}
 {% block content %}
-<h2>Создать заявку</h2>
-<form method="post" enctype="multipart/form-data">{% csrf_token %}
+<div class="container" style="max-width: 600px; margin-top: 2rem;">
+  <h2>Создать заявку</h2>
+  <form method="post" enctype="multipart/form-data" class="border rounded p-4 shadow-sm bg-light">
+    {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Создать</button>
-</form>
+    <button type="submit" class="btn btn-primary w-100">Создать</button>
+  </form>
+</div>
 {% endblock %}

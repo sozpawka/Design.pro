@@ -1,8 +1,11 @@
 {% extends "studio/base.html" %}
 {% block content %}
-<h3>Вы уверены, что хотите удалить заявку "{{ application.title }}"?</h3>
-<form method="post">{% csrf_token %}
-  <button type="submit">Да, удалить</button>
-  <a href="{% url 'studio:dashboard' %}">Отмена</a>
-</form>
+<div class="container" style="max-width: 500px; margin-top: 2rem;">
+  <h3>Вы уверены, что хотите удалить заявку "{{ application.title }}"?</h3>
+  <form method="post" class="d-flex gap-2">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Да, удалить</button>
+    <a href="{% url 'studio:dashboard' %}" class="btn btn-secondary">Отмена</a>
+  </form>
+</div>
 {% endblock %}

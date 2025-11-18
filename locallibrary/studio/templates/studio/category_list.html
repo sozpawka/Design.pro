@@ -1,19 +1,22 @@
 {% extends "studio/base.html" %}
 {% block content %}
-<h1>Категории</h1>
+<div class="container" style="max-width: 600px; margin-top: 2rem;">
+  <h1>Категории</h1>
 
-<a href="{% url 'studio:category_create' %}">Создать категорию</a>
-
-<ul>
+  <ul class="list-group">
     {% for c in categories %}
-        <li>
-            {{ c.name }}
-            — <a href="{% url 'studio:category_edit' c.pk %}">Изменить</a>
-            — <a href="{% url 'studio:category_delete' c.pk %}">Удалить</a>
-        </li>
-    {% empty %}
-        <li>Нет категорий</li>
-    {% endfor %}
-</ul>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ c.name }}
+        <span>
+          <a href="{% url 'studio:category_edit' c.pk %}" class="btn btn-sm btn-outline-secondary me-2">Изменить</a>
+          <a href="{% url 'studio:category_delete' c.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+        </span>
+      </li>
 
+    {% empty %}
+      <li class="list-group-item">Нет категорий</li>
+    {% endfor %}
+      <a href="{% url 'studio:category_create' %}" class="btn btn-primary mb-3">Создать категорию</a>
+  </ul>
+</div>
 {% endblock %}

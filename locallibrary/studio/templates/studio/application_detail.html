@@ -1,31 +1,34 @@
 {% extends "studio/base.html" %}
 {% block content %}
-<h2>{{ application.title }}</h2>
-<p>Пользователь: {{ application.user.username }}</p>
-<p>Категория: {{ application.category.name }}</p>
-<p>Дата: {{ application.created }}</p>
-<p>Статус: {{ application.get_status_display }}</p>
-<p>Описание: {{ application.description }}</p>
+<div class="container" style="max-width: 700px; margin-top: 2rem;">
+  <h2>{{ application.title }}</h2>
+  <p><strong>Пользователь:</strong> {{ application.user.username }}</p>
+  <p><strong>Категория:</strong> {{ application.category.name }}</p>
+  <p><strong>Дата:</strong> {{ application.created|date:"d.m.Y H:i" }}</p>
+  <p><strong>Статус:</strong> {{ application.get_status_display }}</p>
+  <p><strong>Описание:</strong><br> {{ application.description|linebreaks }}</p>
 
-{% if application.image %}
-  <img src="{{ application.image.url }}" alt="Image" style="max-width:300px;">
-{% endif %}
-
-{% if application.design_image %}
-  <h4>Изображение результата:</h4>
-  <img src="{{ application.design_image.url }}" alt="Design image" style="max-width:300px;">
-{% endif %}
-
-{% if user.is_staff or user.is_superuser %}
-  <hr>
-  <a href="{% url 'studio:change_status_in_progress' application.pk %}">Принять в работу</a> |
-  <a href="{% url 'studio:change_status_done' application.pk %}">Отметить как выполнено</a>
-{% endif %}
-
-{% if user == application.user %}
-  <a href="{% url 'studio:edit_application' application.pk %}">Редактировать</a>
-  {% if application.can_user_delete %}
-    <a href="{% url 'studio:delete_application' application.pk %}">Удалить</a>
+  {% if application.image %}
+    <img src="{{ application.image.url }}" alt="Image" class="img-thumbnail mb-3" style="max-width:300px;">
   {% endif %}
-{% endif %}
+
+  {% if application.design_image %}
+    <h4>Изображение результата:</h4>
+    <img src="{{ application.design_image.url }}" alt="Design image" class="img-thumbnail mb-3" style="max-width:300px;">
+  {% endif %}
+
+  {% if user.is_staff or user.is_superuser %}
+    <hr>
+    <a href="{% url 'studio:change_status_in_progress' application.pk %}" class="btn btn-warning me-2">Принять в работу</a>
+    <a href="{% url 'studio:change_status_done' application.pk %}" class="btn btn-success">Отметить как выполнено</a>
+  {% endif %}
+
+  {% if user == application.user %}
+    <hr>
+    <a href="{% url 'studio:edit_application' application.pk %}" class="btn btn-outline-primary me-2">Редактировать</a>
+    {% if application.can_user_delete %}
+      <a href="{% url 'studio:delete_application' application.pk %}" class="btn btn-outline-danger">Удалить</a>
+    {% endif %}
+  {% endif %}
+</div>
 {% endblock %}

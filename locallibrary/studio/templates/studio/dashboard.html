@@ -1,34 +1,37 @@
 {% extends 'studio/base.html' %}
 
 {% block content %}
-<header>
-    <h1>Мои заявки</h1>
+<header class="mb-4">
+    <h1 class="text-primary">Мои заявки</h1>
 </header>
 
 {% if applications %}
-<ul>
+<ul class="list-group">
     {% for a in applications %}
-    <li>
-        <a href="{% url 'studio:application_detail' a.pk %}">
-            {{ a.created|date:"d.m.Y H:i" }} - {{ a.title }} ({{ a.get_status_display }})
-        </a>
-        {% if a.image %}
-            <br><img src="{{ a.image.url }}" alt="{{ a.title }}" width="120">
-        {% endif %}
-        <form style="display:inline" method="post" action="{% url 'studio:delete_application' a.pk %}">
+    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+        <div>
+            <a href="{% url 'studio:application_detail' a.pk %}" class="fw-semibold text-decoration-none">
+                {{ a.created|date:"d.m.Y H:i" }} - {{ a.title }} ({{ a.get_status_display }})
+            </a>
+            {% if a.image %}
+                <br>
+                <img src="{{ a.image.url }}" alt="{{ a.title }}" width="120" class="mt-2 rounded">
+            {% endif %}
+        </div>
+        <form method="post" action="{% url 'studio:delete_application' a.pk %}" class="ms-3">
             {% csrf_token %}
-            <button type="submit">Удалить</button>
+            <button type="submit" class="btn btn-outline-danger btn-sm">Удалить</button>
         </form>
     </li>
     {% endfor %}
 </ul>
 {% else %}
-<p>У вас пока нет заявок.</p>
+<p class="text-muted">У вас пока нет заявок.</p>
 {% endif %}
 
-<div style="margin-top: 20px;">
-    <a href="{% url 'studio:create_application' %}">
-        <button style="padding: 10px 20px; font-size: 16px;">Создать новую заявку</button>
+<div class="mt-4">
+    <a href="{% url 'studio:create_application' %}" class="btn btn-primary">
+        Создать новую заявку
     </a>
 </div>
 {% endblock %}

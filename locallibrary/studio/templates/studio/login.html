@@ -1,9 +1,18 @@
 {% extends 'studio/base.html' %}
 {% block content %}
-<h2>Вход</h2>
-<form method="post">{% csrf_token %}
-    <p><label>Логин: <input type="text" name="username"></label></p>
-    <p><label>Пароль: <input type="password" name="password"></label></p>
-    <button type="submit">Войти</button>
-</form>
+<div class="container py-5" style="max-width: 400px;">
+  <h2 class="mb-4 text-center">Вход</h2>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="id_username" class="form-label">Логин</label>
+      <input type="text" class="form-control" id="id_username" name="username" required>
+    </div>
+    <div class="mb-4">
+      <label for="id_password" class="form-label">Пароль</label>
+      <input type="password" class="form-control" id="id_password" name="password" required>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Войти</button>
+  </form>
+</div>
 {% endblock %}
