@@ -3,6 +3,13 @@
 {% block content %}
 <header class="mb-4">
     <h1 class="text-primary">Мои заявки</h1>
+
+    <div class="btn-group mb-3" role="group" aria-label="Фильтр по статусу">
+        <a href="{% url 'studio:dashboard' %}" class="btn btn-outline-primary {% if not selected_status %}active{% endif %}">Все</a>
+        <a href="{% url 'studio:dashboard' %}?status=new" class="btn btn-outline-primary {% if selected_status == 'new' %}active{% endif %}">Новые</a>
+        <a href="{% url 'studio:dashboard' %}?status=in_progress" class="btn btn-outline-primary {% if selected_status == 'in_progress' %}active{% endif %}">В работе</a>
+        <a href="{% url 'studio:dashboard' %}?status=done" class="btn btn-outline-primary {% if selected_status == 'done' %}active{% endif %}">Выполненные</a>
+    </div>
 </header>
 
 {% if applications %}

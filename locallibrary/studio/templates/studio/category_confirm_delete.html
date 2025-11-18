@@ -2,7 +2,6 @@
 {% block content %}
 <div class="container" style="max-width: 500px; margin-top: 2rem;">
   <h1>Удалить категорию: {{ category.name }}</h1>
-  <p>При удалении категории будут удалены все заявки этой категории.</p>
 
   <form method="post" class="d-flex gap-2">
     {% csrf_token %}

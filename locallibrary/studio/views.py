@@ -251,10 +251,6 @@ def change_status_in_progress(request, pk):
 def change_status_done(request, pk):
     app = get_object_or_404(Application, pk=pk)
 
-    if app.status != Application.STATUS_IN_PROGRESS:
-        messages.error(request, "Завершить можно только заявку в статусе «Принято в работу».")
-        return redirect('studio:application_detail', pk=app.pk)
-
     if request.method == 'POST':
         form = ApplicationStatusDoneForm(request.POST, request.FILES, instance=app)
         if form.is_valid():

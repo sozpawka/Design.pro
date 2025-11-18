@@ -18,16 +18,21 @@
   {% endif %}
 
   {% if user.is_staff or user.is_superuser %}
-    <hr>
+  {% if application.status == application.STATUS_NEW %}
+        <hr>
     <a href="{% url 'studio:change_status_in_progress' application.pk %}" class="btn btn-warning me-2">Принять в работу</a>
     <a href="{% url 'studio:change_status_done' application.pk %}" class="btn btn-success">Отметить как выполнено</a>
+   {% endif %}
   {% endif %}
 
+
   {% if user == application.user %}
-    <hr>
-    <a href="{% url 'studio:edit_application' application.pk %}" class="btn btn-outline-primary me-2">Редактировать</a>
-    {% if application.can_user_delete %}
-      <a href="{% url 'studio:delete_application' application.pk %}" class="btn btn-outline-danger">Удалить</a>
+    {% if application.status == application.STATUS_NEW %}
+           <hr>
+      <a href="{% url 'studio:edit_application' application.pk %}" class="btn btn-outline-primary me-2">Редактировать</a>
+      {% if application.can_user_delete %}
+        <a href="{% url 'studio:delete_application' application.pk %}" class="btn btn-outline-danger">Удалить</a>
+      {% endif %}
     {% endif %}
   {% endif %}
 </div>
