@@ -26,5 +26,4 @@ urlpatterns = [
     path('application/<int:pk>/in_progress/', views.change_status_in_progress, name='change_status_in_progress'),
     path('application/<int:pk>/done/', views.change_status_done, name='change_status_done'),
 
-    path('report/', views.report, name='report'),
 ]
